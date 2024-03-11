@@ -167,9 +167,17 @@ color: var(--DarkGrayishBlue);
     color: var(--DarkGrayishBlue);
     box-shadow:var(--boxShodowDim);
 }
+.drag {
+    color: var(--DarkGrayishBlue);
+    font-size: 18px;
+}
 .bordertp {
     border-top: 1.6px solid var(--VeryDarkGrayishBlue);
 }
+.hidden {
+    display: none;
+}
+
 @media only screen and (max-width: 576px) {
     body {
         background-image: url(/images/bg-mobile-dark.jpg);

@@ -126,7 +126,8 @@ let itemsLeft = 0;
 listLeft.textContent = localStorage.getItem('itemsLeft') ?  localStorage.getItem('itemsLeft') : 0
 // check if there is key items in available in the local Storage, if not them the itemsArray gets an empty Array 
 let itemsArray = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [];
-console.log(itemsArray)
+
+//Add a Task Functiuonality
 document.addEventListener("keyup", (e) => {
   if (e.key === "Enter" && inputData.value !== "") {
     itemsLeft++;
@@ -135,24 +136,38 @@ document.addEventListener("keyup", (e) => {
     const item = document.querySelector(".inputData")
     createItem(item)
     inputData.value = '';
+    showDragContent () 
   }
 })
+
+//This Function will show the .drag content if the itemsArray is > 1
+function showDragContent () {
+  if (itemsArray.length >= 2) {
+    document.querySelector('.drag').classList.remove('hidden')
+  } else {
+    document.querySelector('.drag').classList.add('hidden')
+  }
+}
+
+//This function will remove the items and itemsLeft ITEM from the LOCAL STORAGE
 function clearAll () {
   if (itemsArray.length === 0) {
     localStorage.removeItem('items')
     localStorage.removeItem('itemsLeft')
   }
 }
+
+//This function will add
 function displayItems(){
   let items = ""
-  itemsArray.forEach(function (value, key) {
+  itemsArray.forEach(function (value) {
     items += `
     <div class="taskList d-flex flex-grow align-items-center p-3" draggable="true">
     <div class="check">
     </div>
 
       <p class="taskText d-block mb-0">
-      ${itemsArray[key]}
+      ${value}
       </p>
 
     <div class="removeTask">
@@ -175,6 +190,7 @@ function displayItems(){
   }
 }
 
+//This function add the checked styles to the list that is checked, also it updates the number of the itemsLefts
 function activateCheckListeners(){
 const checkBoxes = document.querySelectorAll('.check');
 checkBoxes.forEach( function (checkBox) {
@@ -197,6 +213,7 @@ checkBoxes.forEach( function (checkBox) {
 })
 }
 
+//This Function allows users to drag task lists around the taskBox but outide
 function activeDragListeners() {
   const taskLists = document.querySelectorAll('.taskList');
   taskLists.forEach(element => {
@@ -213,6 +230,7 @@ function activeDragListeners() {
   });
 }
 
+//This Function allows users to drag task lists around the taskBox but outide (FOR MOBILE)
 function activeTouchListeners() {
   const taskLists = document.querySelectorAll('.taskList');
   taskLists.forEach(element => {
@@ -229,6 +247,7 @@ function activeTouchListeners() {
   });
 }
 
+//This Function delete and task from the todo lists
 function activateDeleteListeners(){
   let deleteBtn = document.querySelectorAll(".removeTask")
   deleteBtn.forEach((dB, i) => {
@@ -236,12 +255,14 @@ function activateDeleteListeners(){
   })
 }
 
+//Function create and displays a new task lisk
 function createItem(item){
   itemsArray.unshift(item.value)
   localStorage.setItem('items', JSON.stringify(itemsArray))
   displayItems(); // Update the UI without reloading
 }
 
+// The activateDeleteListeners Function is dependent on this to remove/delete a function from the lists
 function deleteItem(i){
   itemsLeft--;
   listLeft.textContent = `${itemsLeft}`;
@@ -249,6 +270,7 @@ function deleteItem(i){
   localStorage.setItem('items', JSON.stringify(itemsArray))
   localStorage.setItem('itemsLeft', JSON.stringify(itemsLeft))
   clearAll ()
+  showDragContent () 
   displayItems(); // Update the UI without reloading
 }
 
@@ -263,6 +285,7 @@ clearBtn.addEventListener("click", function () {
     task.parentNode.remove();
   });
   clearAll ()
+  showDragContent () 
   displayItems();
 });
 
@@ -276,6 +299,11 @@ document.querySelectorAll('.clear--all').forEach(btn => {
     itemsArray = [];
     localStorage.setItem('items', JSON.stringify(itemsArray))
     localStorage.clear();
+    if (itemsArray.length >= 2) {
+      document.querySelector('.drag').classList.remove('hidden')
+    } else {
+      document.querySelector('.drag').classList.add('hidden')
+    }
     taskInfo.classList.remove('bordertp')
   }) 
 })
