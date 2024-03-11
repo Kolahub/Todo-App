@@ -164,6 +164,7 @@ function displayItems(){
   activateDeleteListeners()
   activateCheckListeners()
   activeDragListeners() 
+  activeTouchListeners() 
 
 
   if (taskBox.innerHTML !== '') {
@@ -205,6 +206,22 @@ function activeDragListeners() {
       });
 
       taskBox.addEventListener('drop',(event) => {
+        taskBox.prepend(element);
+      });
+    });
+  });
+}
+
+function activeTouchListeners() {
+  const taskLists = document.querySelectorAll('.taskList');
+  taskLists.forEach(element => {
+    element.addEventListener('touchstart',(event) => {
+      console.log(event);
+      taskBox.addEventListener('touchleave', (event) => {
+        event.preventDefault();
+      });
+
+      taskBox.addEventListener('touchenter',(event) => {
         taskBox.prepend(element);
       });
     });
