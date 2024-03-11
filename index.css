@@ -146,6 +146,7 @@ color: var(--DarkGrayishBlue);
 
 .customText:nth-child(1) {
     color: var(--BrightBlue);
+    cursor: pointer;
 }
 .customText:nth-child(2) {
     cursor: pointer;
