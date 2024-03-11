@@ -3,7 +3,7 @@ function toggleDarkLightMode () {
 * Utility function to calculate the current theme setting.
 * Look for a local storage value.
 * Fall back to system setting.
-* Fall back to dark mode.
+* Fall back to light mode.
 */
 function calculateSettingAsThemeString({ localStorageTheme, systemSettingDark }) {
   if (localStorageTheme !== null) {
@@ -11,10 +11,10 @@ function calculateSettingAsThemeString({ localStorageTheme, systemSettingDark })
   }
 
   if (systemSettingDark.matches) {
-    return "light";
+    return "dark";
   }
 
-  return "dark";
+  return "light";
 }
 
 /**
@@ -248,7 +248,7 @@ clearBtn.addEventListener("click", function () {
   displayItems();
 });
 
-/*
+
 //CLEAR ALL THE TODO LISTS
 document.querySelector('.uu').addEventListener('click',function () {
     itemsLeft = 0;
@@ -258,8 +258,8 @@ document.querySelector('.uu').addEventListener('click',function () {
     localStorage.setItem('items', JSON.stringify(itemsArray))
     localStorage.clear();
     taskInfo.classList.remove('bordertp')
-  }) */
-  
+  }) 
+
 window.onload = function() {
   displayItems()
 };

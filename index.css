@@ -73,7 +73,6 @@ body {
     border-radius: 50%;
     border: 2px solid hsl(233, 11%, 84%);
     cursor: pointer;
-    /* background-image: linear-gradient(to right, hsl(192, 100%, 67%) ,  hsl(280, 87%, 65%)); */
 }
 
 .check:hover {
@@ -178,5 +177,11 @@ color: var(--DarkGrayishBlue);
     .todo-app {
         max-width: calc(100% - 3rem);
         margin: 0 1.5rem;
+    }
+
+    .removeTask {
+        margin-left: auto;
+        width: 25px;
+        display: block;
     }
 }
