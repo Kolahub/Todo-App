@@ -122,7 +122,9 @@ const taskInfo = document.querySelector('.taskInfo');
 
 
 let itemsLeft = 0;
+ // check if the listLeft is avaliable in the Local Storage, if not then its content will be 0
 listLeft.textContent = localStorage.getItem('itemsLeft') ?  localStorage.getItem('itemsLeft') : 0
+// check if there is key items in available in the local Storage, if not them the itemsArray gets an empty Array 
 let itemsArray = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [];
 console.log(itemsArray)
 document.addEventListener("keyup", (e) => {
@@ -164,7 +166,7 @@ function displayItems(){
   activateDeleteListeners()
   activateCheckListeners()
   activeDragListeners() 
-
+  activeTouchListeners() 
 
   if (taskBox.innerHTML !== '') {
     taskInfo.classList.add('bordertp')
@@ -205,6 +207,22 @@ function activeDragListeners() {
       });
 
       taskBox.addEventListener('drop',(event) => {
+        taskBox.prepend(element);
+      });
+    });
+  });
+}
+
+function activeTouchListeners() {
+  const taskLists = document.querySelectorAll('.taskList');
+  taskLists.forEach(element => {
+    element.addEventListener('touchstart',(event) => {
+      console.log(event);
+      taskBox.addEventListener('touchmove', (event) => {
+        event.preventDefault();
+      });
+
+      taskBox.addEventListener('touchend',(event) => {
         taskBox.prepend(element);
       });
     });
