@@ -120,9 +120,10 @@ const listLeft = document.querySelector('.listLeft');
 const clearBtn = document.querySelector(".clear");
 const taskInfo = document.querySelector('.taskInfo');
 
-
-let itemsLeft = 0;
- // check if the listLeft is avaliable in the Local Storage, if not then its content will be 0
+let itemsLeft;
+// check if there is itemsLeft key in available in the local Storage, if not then the itemsLeft equal 0
+itemsLeft = localStorage.getItem('itemsLeft') ?  localStorage.getItem('itemsLeft') : 0
+// check if there is itemsLeft key in available in the local Storage, if not then the listLeft.textContent equal 0
 listLeft.textContent = localStorage.getItem('itemsLeft') ?  localStorage.getItem('itemsLeft') : 0
 // check if there is key items in available in the local Storage, if not them the itemsArray gets an empty Array 
 let itemsArray = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [];
@@ -158,7 +159,7 @@ function clearAll () {
 }
 
 //This function will add
-function displayItems(){
+function displayItems() {
   let items = ""
   itemsArray.forEach(function (value) {
     items += `
@@ -180,8 +181,6 @@ function displayItems(){
   taskBox.innerHTML = items
   activateDeleteListeners()
   activateCheckListeners()
-  activeDragListeners() 
-  activeTouchListeners() 
 
   if (taskBox.innerHTML !== '') {
     taskInfo.classList.add('bordertp')
@@ -213,39 +212,18 @@ checkBoxes.forEach( function (checkBox) {
 })
 }
 
-//This Function allows users to drag task lists around the taskBox but outide
-function activeDragListeners() {
-  const taskLists = document.querySelectorAll('.taskList');
-  taskLists.forEach(element => {
-    element.addEventListener('dragstart',(event) => {
-      console.log(event);
-      taskBox.addEventListener('dragover', (event) => {
-        event.preventDefault();
-      });
-
-      taskBox.addEventListener('drop',(event) => {
-        taskBox.prepend(element);
-      });
-    });
+//Enables Drag and Drop to Reorder Todo lists Using the Sortable.js library
+document.addEventListener('DOMContentLoaded', function () {
+  // Initialize Sortable
+  new Sortable(taskBox, {
+    animation: 150, // Animation duration in milliseconds (optional)
+    swap: true, // Enable the swap feature
+    onEnd: function (evt) {
+      // Callback function called when the user stopped sorting and the DOM has been updated
+      console.log('Element was moved:', evt.item);
+    }
   });
-}
-
-//This Function allows users to drag task lists around the taskBox but outide (FOR MOBILE)
-function activeTouchListeners() {
-  const taskLists = document.querySelectorAll('.taskList');
-  taskLists.forEach(element => {
-    element.addEventListener('touchstart',(event) => {
-      console.log(event);
-      taskBox.addEventListener('touchmove', (event) => {
-        event.preventDefault();
-      });
-
-      taskBox.addEventListener('touchend',(event) => {
-        taskBox.prepend(element);
-      });
-    });
-  });
-}
+});
 
 //This Function delete and task from the todo lists
 function activateDeleteListeners(){
@@ -298,7 +276,8 @@ document.querySelectorAll('.clear--all').forEach(btn => {
     taskBox.innerHTML = '';
     itemsArray = [];
     localStorage.setItem('items', JSON.stringify(itemsArray))
-    localStorage.clear();
+    localStorage.removeItem('items')
+    localStorage.removeItem('itemsLeft')
     if (itemsArray.length >= 2) {
       document.querySelector('.drag').classList.remove('hidden')
     } else {
