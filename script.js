@@ -6,7 +6,7 @@ class Todo {
   #listLeft = document.querySelector(".listLeft");
   #clearBtn = document.querySelector(".clear");
   #taskInfo = document.querySelector(".taskInfo");
-  #clearAllBtn = document.querySelectorAll(".clear--all")
+  #clearAllBtn = document.querySelectorAll(".clear--all");
 
   #itemsLeft = localStorage.getItem("itemsLeft")
     ? localStorage.getItem("itemsLeft")
@@ -117,7 +117,15 @@ class Todo {
     let deleteBtn = document.querySelectorAll(".removeTask");
     deleteBtn.forEach((dB, i) => {
       dB.addEventListener("click", () => {
-        this._deleteItem(i);
+        let maskAsCompleted;
+        const taskList = dB.closest(".taskList");
+        const check = taskList.querySelector(".check");
+        if (check.classList.contains("checked")) {
+          maskAsCompleted = true;
+        } else {
+          maskAsCompleted = false;
+        }
+        this._deleteItem(i, maskAsCompleted);
       });
     });
   }
@@ -130,8 +138,12 @@ class Todo {
   }
 
   //_activateCheckListeners IS DEPENDANT ON THIS FUNCTION TO DELETE TASKS FROM TODO LISTS
-  _deleteItem(i) {
-    this.#itemsLeft--;
+  _deleteItem(i, maskAsCompleted) {
+    if (maskAsCompleted) {
+      this.#itemsLeft;
+    } else {
+      this.#itemsLeft--;
+    }
     this.#listLeft.textContent = `${this.#itemsLeft}`;
     this.#itemsArray.splice(i, 1);
     localStorage.setItem("items", JSON.stringify(this.#itemsArray));
@@ -221,6 +233,6 @@ class Todo {
 }
 
 window.onload = () => {
-new Todo();
-toggleDarkLightMode()
-}
+  new Todo();
+  toggleDarkLightMode();
+};
